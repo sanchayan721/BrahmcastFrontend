@@ -1,11 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { apiSlice } from "./api/apiSlice";
 import authReducer from '../features/auth/authSlice';
+import registrationReducer from "../features/registration/registrationSlice";
+import navigateRegistrationFormReducer from "../features/registration/navigateRegistrationFormSlice";
 
 export const store = configureStore({
     reducer: {
         [apiSlice.reducerPath]: apiSlice.reducer,
-        auth: authReducer
+        auth: authReducer,
+        registration: registrationReducer,
+        navigateRegistrationForm: navigateRegistrationFormReducer,
     },
     middleware: getDefaultMiddleware => getDefaultMiddleware().concat(apiSlice.middleware),
     devTools: true

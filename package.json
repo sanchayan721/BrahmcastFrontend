@@ -11,7 +11,10 @@
     "@mui/x-data-grid": "^5.17.10",
     "@mui/x-date-pickers": "^5.0.7",
     "@reduxjs/toolkit": "^1.9.1",
-    "framer-motion": "^7.10.3",
+    "dayjs": "^1.11.7",
+    "libphonenumber-js": "^1.10.16",
+    "mui-one-time-password-input": "^1.0.4",
+    "mui-phone-number": "^3.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-formdata": "^3.0.0",
@@ -19,7 +22,9 @@
     "react-hook-form": "^7.41.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.5.0",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "swiper": "^8.4.5",
+    "underscore": "^1.13.6"
   },
   "scripts": {
     "start": "react-scripts start",

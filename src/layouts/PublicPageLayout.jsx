@@ -9,7 +9,8 @@ const PublicPageLayout = () => {
             <main
                 className="App"
                 style={{
-                    marginTop: '6.3em'
+                    marginTop: '5em',
+                    overflow: 'scrollY'
                 }}
             >
                 <Outlet />

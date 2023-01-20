@@ -71,6 +71,7 @@ const PublicHeader = () => {
 						justifyContent={'center'}
 						alignItems={'center'}
 						gap={'1em'}
+						minWidth={'20em'}
 					>
 						<ThemedButton
 							variant='contained'
@@ -78,8 +79,8 @@ const PublicHeader = () => {
 							fullWidth
 							endIcon={<AppRegistrationRounded />}
 							disableElevation
-							type='submit'
-						>
+							sx={{ fontSize: '0.85em' }}
+							>
 							Register
 						</ThemedButton>
 						<ThemedButton
@@ -88,7 +89,7 @@ const PublicHeader = () => {
 							fullWidth
 							endIcon={<LoginRounded />}
 							disableElevation
-							type='submit'
+							sx={{ fontSize: '0.85em' }}
 						>
 							Log In
 						</ThemedButton>

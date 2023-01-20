@@ -8,13 +8,36 @@ const Logo = () => {
         <Box
             display={'flex'}
             justifyContent={'center'}
-            gap={'1em'}
+            alignItems={'center'}
+            gap={'1.125em'}
             height={'1.3em'}
         >
-            <LogoImage />
-            <LogomarkImage />
+            <div
+                style={{
+                    height: '2.3em',
+                    width: '2.3em',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <div
+                    className={'logo-image'}
+                    style={{
+                        height: '3.5em',
+                        width: '3.5em',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: '50%'
+                    }}
+                >
+                    <LogoImage height={'2.3em'} width={'2.3em'} />
+                </div>
+            </div>
+            <LogomarkImage height={'1.2em'} />
         </Box>
     )
 }
 
-export default Logo
+export default Logo;

@@ -15,9 +15,10 @@ import { useDispatch } from 'react-redux'
 import { setCredentials } from '../../features/auth/authSlice'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { colors } from '../theme/style'
+import { PASSWORD_PATTERN, USERNAME_OR_EMAIL_PATTERN } from '../../utils/patterns'
 
 const helperTextObject = {
-    email: {
+    username_email: {
         required: "Username or Email is Required",
         pattern: "Not a Username or Email"
     },
@@ -32,15 +33,13 @@ const LoginForm = () => {
     const {
         handleSubmit,
         control,
-        formState,
+        formState: { isValid, errors },
         reset,
         setFocus,
         watch
     } = useForm({
         reValidateMode: 'onChange'
     });
-
-    const { isValid } = formState;
 
     const [login, { isLoading }] = useLoginMutation();
     const dispatch = useDispatch();
@@ -75,157 +74,185 @@ const LoginForm = () => {
 
     useEffect(() => {
         const subscription = watch((_value, { type }) => {
-            err && type.match('change') && setErr(null)
+            err && type.match('change') && setErr(null);
         });
         return () => subscription.unsubscribe();
     }, [err, watch]);
 
     return (
         <ThemedCard
-            elevation={4}
+            elevation={6}
             sx={{
                 display: 'flex',
                 width: '25em',
                 height: 'max-content',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: '2.5em',
-                padding: '2.5em 1em'
+                padding: '0'
             }}
         >
-            <form
-                onSubmit={handleSubmit(handleOnSubmit)}
-                style={{
-                    width: '100%'
-                }}
+            <Box
+                width="100%"
+                display={'flex'}
+                flexDirection='column'
+                padding={'1em'}
             >
+                <Typography varient="h3" color={'primary'} fontSize={'1.5em'} fontWeight={'bold'}>Log In</Typography>
+                <Typography lineHeight={'1.256em'} fontWeight={'medium'}>Resume your journey</Typography>
+            </Box>
+            <Box width={'100%'}>
+                <Divider orientation='horizontal' />
+            </Box>
+            <Box
+                width={'100%'}
+                display={'flex'}
+                flexDirection="column"
+                alignItems={'center'}
+                gap={'2em'}
+                padding={'1.6em 1em 1.5em 1em'}
+            >
+                <form
+                    onSubmit={handleSubmit(handleOnSubmit)}
+                    style={{
+                        width: '100%'
+                    }}
+                >
+                    <Box
+                        width={'100%'}
+                        display={'flex'}
+                        flexDirection={'column'}
+                        justifyContent={'center'}
+                        alignItems={'center'}
+                        gap={'1.2em'}
+                    >
+                        <Controller
+                            control={control}
+                            name="username_email"
+                            defaultValue={''}
+                            rules={{
+                                required: true,
+                                pattern: USERNAME_OR_EMAIL_PATTERN
+                            }}
+                            render={({ field, fieldState: { error } }) => {
+                                return (
+                                    <ThemedField
+                                        {...field}
+                                        ref={null}
+                                        name={'username_email'}
+                                        id='username__email'
+                                        label="Unsername or Email"
+                                        size='small'
+                                        fullWidth
+                                        error={error !== undefined || err !== null}
+                                        helperText={error ? helperTextObject.username_email[error?.type] : ''}
+                                    />
+                                )
+                            }}
+                        />
+
+                        <Controller
+                            control={control}
+                            name="password"
+                            defaultValue={''}
+                            rules={{
+                                required: true,
+                                pattern: PASSWORD_PATTERN
+                            }}
+                            render={({ field, fieldState: { error } }) => {
+                                return (
+                                    <PasswordField
+                                        {...field}
+                                        ref={null}
+                                        id="user__password"
+                                        label="Password"
+                                        size='small'
+                                        fullWidth
+                                        error={error !== undefined || err !== null}
+                                        helperText={error ? helperTextObject.password[error?.type] : ''}
+                                    />
+                                )
+                            }}
+                        />
+
+                        {
+                            err
+                            && <Box
+                                width={'100%'}
+                                display={'flex'}
+                                justifyContent={'center'}
+                                alignItems={'center'}
+                            >
+                                <Typography variant='body1' color={colors.danger}>
+                                    {err}
+                                </Typography>
+                            </Box>
+                        }
+
+                        <ThemedLoadingButton
+                            variant='contained'
+                            size='large'
+                            fullWidth
+                            loading={isLoading}
+                            loadingPosition='end'
+                            endIcon={<LoginRounded />}
+                            disableElevation
+                            type='submit'
+                            disabled={Object.keys(errors).length === 0 ? false : !isValid}
+                        >
+                            Log In
+                        </ThemedLoadingButton>
+                        <DefaultLink
+                            to={'/reset-password'}
+                            text="Forgot password?"
+                            lineHeight={'1em'}
+                            sx={{ marginTop: '0.5em' }}
+
+                        />
+                    </Box>
+                </form>
+                <Box
+                    width={'100%'}
+                    marginY={'0.2em'}
+                >
+                    <Divider orientation='horizontal'>
+                        <Typography>or</Typography>
+                    </Divider>
+                </Box>
                 <Box
                     width={'100%'}
                     display={'flex'}
                     flexDirection={'column'}
                     justifyContent={'center'}
                     alignItems={'center'}
-                    gap={'1.5em'}
+                    gap={'1.33em'}
                 >
-                    <Controller
-                        control={control}
-                        name="username_email"
-                        defaultValue={''}
-                        rules={{
-                            required: true,
-                            pattern: /^\S{4,}$/
-                        }}
-                        render={({ field, fieldState: { error } }) => (
-                            <ThemedField
-                                {...field}
-                                ref={null}
-                                name={'username_email'}
-                                id='username__email'
-                                label="Unsername or Email"
-                                size='small'
-                                fullWidth
-                                error={error !== undefined || err !== null}
-                                helperText={error ? helperTextObject.email[error?.type] : ''}
-                            />
-                        )}
-                    />
-
-                    <Controller
-                        control={control}
-                        name="password"
-                        defaultValue={''}
-                        rules={{
-                            required: true,
-                            pattern: /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z].*[a-z]).{8,}$/
-                        }}
-                        render={({ field, fieldState: { error } }) => (
-                            <PasswordField
-                                {...field}
-                                ref={null}
-                                id="user__password"
-                                label="Password"
-                                size='small'
-                                fullWidth
-                                error={error !== undefined || err !== null}
-                                helperText={error ? helperTextObject.password[error?.type] : ''}
-                            />
-                        )}
-                    />
-
-                    {
-                        err
-                        && <Box
-                            width={'100%'}
-                            display={'flex'}
-                            justifyContent={'center'}
-                            alignItems={'center'}
-                        >
-                            <Typography variant='body1' color={colors.danger}>
-                                {err}
-                            </Typography>
-                        </Box>
-                    }
-
-                    <ThemedLoadingButton
-                        variant='contained'
-                        size='large'
-                        fullWidth
-                        loading={isLoading}
-                        loadingPosition='end'
-                        endIcon={<LoginRounded />}
-                        disableElevation
-                        type='submit'
-                        disabled={!isValid}
+                    <Box
+                        width={'16em'}
+                        display={'flex'}
+                        flexDirection={'column'}
+                        gap={'0.8em'}
                     >
-                        Log In
-                    </ThemedLoadingButton>
-                    <DefaultLink
-                        to={'/reset-password'}
-                        text="Forgot password?"
-                    />
+                        <ThemedIconButton
+                            varient='outlined'
+                            icon={<GoogleIcon style={{ height: '1.5em', width: '1.5em' }} />}
+                            text={'Continue with Google'}
+                        />
+                        <ThemedIconButton
+                            varient='outlined'
+                            icon={<FacebookIcon style={{ height: '1.5em', width: '1.5em' }} />}
+                            text={'Continue with Facebook'}
+                        />
+                    </Box>
+                    <Typography variant='body1' lineHeight={'0.5em'}>Not a member?</Typography>
+                    <ThemedButton
+                        variant='outlined'
+                        fullWidth
+                        size='large'
+                        endIcon={<AppRegistrationRounded />}
+                    >
+                        Register
+                    </ThemedButton>
                 </Box>
-            </form>
-            <Box
-                width={'100%'}
-            >
-                <Divider orientation='horizontal'>
-                    <Typography>or</Typography>
-                </Divider>
-            </Box>
-            <Box
-                width={'100%'}
-                display={'flex'}
-                flexDirection={'column'}
-                justifyContent={'center'}
-                alignItems={'center'}
-                gap={'1.5em'}
-            >
-                <Box
-                    width={'16em'}
-                    display={'flex'}
-                    flexDirection={'column'}
-                    gap={'1em'}
-                >
-                    <ThemedIconButton
-                        varient='outlined'
-                        icon={<GoogleIcon />}
-                        text={'Continue with Google'}
-                    />
-                    <ThemedIconButton
-                        varient='outlined'
-                        icon={<FacebookIcon />}
-                        text={'Continue with Facebook'}
-                    />
-                </Box>
-                <Typography variant='body1'>Not a member?</Typography>
-                <ThemedButton
-                    variant='outlined'
-                    fullWidth
-                    size='large'
-                    endIcon={<AppRegistrationRounded />}
-                >
-                    Register
-                </ThemedButton>
             </Box>
         </ThemedCard>
     )
