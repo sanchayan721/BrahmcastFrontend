@@ -1,6 +1,5 @@
-import { FormControlLabel, Radio, RadioGroup } from '@mui/material'
-import React from 'react'
-import { colors } from '../theme/style'
+import { FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import { colors } from '../theme/style';
 
 const RadioGroupGender = () => {
     return (

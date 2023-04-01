@@ -55,7 +55,7 @@
     .creative__community__forms {
         display: grid;
         grid-template-columns: 3em repeat(7, 1fr) 3em;
-        margin-bottom: 5em;
+        margin-bottom: 6em;
         border-radius: 1em;
     }
 

@@ -25,14 +25,18 @@
 html,
 body {
   max-width: 100%;
-  min-height: 100vh;
   font-family: 'Poppins';
-  overflow-x: hidden;
   padding: 0 !important;
   margin: 0 !important;
+  --color-scroll: #ff6363;
+  --color-scroll-hover: #e65959;
+  --color-body-bg: #f7f7f7;
+  --color-scroll-track: white;
+  --color-primary: #D99937;
+  --color-side-blur--gradient: linear-gradient(90deg, rgba(247,247,247,1) 0%, rgba(247,247,247,1) 35%, rgba(247,247,247,0.7457107843137255) 65%, rgba(247,247,247,0.5020133053221288) 85%, rgba(247,247,247,0.1966911764705882) 95%, rgba(247,247,247,0) 100%);
 }
 
-header, 
+header,
 footer {
   padding: 0 !important;
 }
@@ -43,9 +47,12 @@ footer {
   5. Improve text rendering
 */
 body {
+  height: 100vh;
+  overflow: hidden;
+  overflow-y: auto;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  background-color: #f1f1f1;
+  background-color: var(--color-body-bg);
 }
 
 body ul {
@@ -114,8 +121,61 @@ header {
 
 main {
   grid-area: main;
+  padding-top: 5em;
 }
 
 footer {
   grid-area: footer;
+}
+
+/* width */
+body::-webkit-scrollbar {
+  width: 0.6em;
+}
+
+/* Track */
+body::-webkit-scrollbar-track {
+  background: var(--color-scroll-track);
+}
+
+/* Handle */
+body::-webkit-scrollbar-thumb {
+  background: var(--color-scroll);
+  -webkit-box-shadow: 0px 5px 10px -2px rgb(0 0 0 / 33%);
+  box-shadow: 0px 5px 10px -2px rgb(0 0 0 / 33%);
+  transition: background 600ms ease 0s;
+}
+
+/* Handle on hover */
+body::-webkit-scrollbar-thumb:hover {
+  background: var(--color-scroll-hover);
+}
+
+.no-select {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Old versions of Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+
+}
+
+.no-select & input {
+  -webkit-touch-callout: auto;
+  /* iOS Safari */
+  -webkit-user-select: auto;
+  /* Safari */
+  -khtml-user-select: auto;
+  /* Konqueror HTML */
+  -moz-user-select: auto;
+  /* Old versions of Firefox */
+  -ms-user-select: auto;
+  /* Internet Explorer/Edge */
+  user-select: auto;
 }

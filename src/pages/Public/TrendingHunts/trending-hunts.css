@@ -1,0 +1,29 @@
+.trending-hunts {
+    width: 100%;
+    height: calc(100vh - 10em);
+    display: grid;
+    grid-template-columns:
+        15em repeat(11, 1fr) 15em;
+
+    grid-template-rows: repeat(12, 1fr);
+}
+
+.trending-hunts .trending__hunts-texts {
+    grid-column: 2/6;
+    grid-row: 1/2;
+    align-self: center;
+}
+
+.trending-hunts .trending__hunts-subtitle {
+    grid-column: 2/6;
+    grid-row: 2/3;
+    align-self: start;
+}
+
+@media only screen and (max-width: 150em) {
+    .trending-hunts {
+        display: grid;
+        height: calc(100vh - 2.5em);
+        grid-template-columns: 3em repeat(11, 1fr) 3em;
+    }
+}

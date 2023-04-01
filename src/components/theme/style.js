@@ -20,6 +20,12 @@ export const colors = {
     link__primary: "#0277bd"
 };
 
+export const speed = {
+    slow: 1000,
+    medium: 600,
+    fast: 300
+};
+
 const fonts = {
     poppins: "Poppins",
     montserrat: "Montserrat"

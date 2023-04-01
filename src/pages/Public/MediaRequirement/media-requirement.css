@@ -1,0 +1,39 @@
+.media-requirement {
+    width: 100%;
+    height: calc(100vh - 10em);
+    margin: 5em 0;
+    display: grid;
+    grid-template-columns:
+        15em repeat(11, 1fr) 15em;
+
+    grid-template-rows: repeat(12, 1fr);
+}
+
+.media__requirement-texts {
+    grid-column: 2/6;
+    grid-row: 1/3;
+    align-self: center;
+}
+
+.media__requirement-subtitle {
+    grid-column: 2/6;
+    grid-row: 3/4;
+    align-self: start;
+}
+
+.media__requirement-display {
+    grid-column: 2/13;
+    grid-row: 4/13;
+    width: 100%;
+    height: 100%;
+}
+
+@media only screen and (max-width: 150em) {
+    .media-requirement {
+        display: grid;
+        height: calc(100vh - 2.5em);
+        grid-template-columns: 3em repeat(11, 1fr) 3em;
+        margin-bottom: 6em;
+        border-radius: 1em;
+    }
+}

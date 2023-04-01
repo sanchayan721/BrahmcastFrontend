@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { ThemedCard } from '../../Cards'
 import { selectActiveStep, setTotalSteps } from '../../../features/registration/navigateRegistrationFormSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,7 +12,9 @@ import { ACCOUNT_TYPES } from '../../../utils/accountTypes';
 import { CreatorAccountInfo, CreatorDetailInfo } from '../AccountSpecific/Creator';
 import { StudioAccountInfo, StudioDetailInfo } from '../AccountSpecific/Studio';
 import { ProjectOwnerAccountInfo, ProjectOwnerDetailInfo } from '../AccountSpecific/ProjectOwner';
-
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { EffectFade } from "swiper";
+import { colors, speed } from '../../theme/style';
 
 const RegisterForm = () => {
 
@@ -101,11 +103,26 @@ const RegisterForm = () => {
     }
 
     const dispatch = useDispatch();
-    const activeStep = useSelector(selectActiveStep);
-
     useEffect(() => {
         dispatch(setTotalSteps(steps.length));
     }, [dispatch, steps.length]);
+
+    const activeStep = useSelector(selectActiveStep);
+    const [swiperContent, setSwiperContent] = useState(null);
+    const [swiperHeader, setSwiperHeader] = useState(null);
+    const swipeAll = useCallback(() => {
+        swiperContent.slideTo(activeStep, speed.medium, true);
+        swiperHeader.slideTo(activeStep, speed.slow, true);
+    },
+        [
+            activeStep,
+            swiperContent,
+            swiperHeader
+        ]
+    );
+    useEffect(() => {
+        swiperContent && swipeAll();
+    }, [swipeAll, swiperContent])
 
     return (
         <ThemedCard
@@ -119,18 +136,40 @@ const RegisterForm = () => {
                 padding: '0'
             }}
         >
-            <Box
-                width="100%"
-                display={'flex'}
-                flexDirection='column'
-                padding={'1em'}
-            >
-                <Typography varient="h3" color={'primary'} fontSize={'1.5em'} fontWeight={'bold'}>{steps[activeStep].title}</Typography>
-                <Typography lineHeight={'1.256em'} fontWeight={'medium'}>{steps[activeStep].subtitle}</Typography>
+            <Box width="100%">
+                <Swiper
+                    onSwiper={(swpr) => setSwiperHeader(swpr)}
+                    style={{ width: '100%' }}
+                    centeredSlides={true}
+                    hashNavigation={{ watchState: true }}
+                    noSwiping={true}
+                    noSwipingClass='register__swiper-header'
+                    spaceBetween={60}
+                    effect={'fade'}
+                    modules={[EffectFade]}
+                >
+                    {
+                        steps.map((step, key) => {
+                            return (
+                                <SwiperSlide
+                                    key={key}
+                                    className='register__swiper-header'
+                                    style={{ display: 'flex', flexDirection: 'column', padding: '1em', background: colors.white }}
+                                >
+                                    <Typography varient="h3" color={'primary'} fontSize={'1.5em'} fontWeight={'bold'}>{step.title}</Typography>
+                                    <Typography lineHeight={'1.256em'} fontWeight={'medium'}>{step.subtitle}</Typography>
+                                </SwiperSlide>
+                            )
+                        })
+                    }
+
+                </Swiper>
             </Box>
+
             <Box width={'100%'}>
                 <Divider orientation='horizontal' />
             </Box>
+
             <Box
                 width={'100%'}
                 minHeight={'32.5em'}
@@ -139,9 +178,31 @@ const RegisterForm = () => {
                 flexDirection="column"
                 alignItems={'center'}
                 gap={'1.5em'}
-                padding={'1em 1em 1.5em 1em'}
+                overflow={'hidden'}
             >
-                {steps[activeStep].component}
+                <Swiper
+                    onSwiper={(swpr) => setSwiperContent(swpr)}
+                    style={{ width: '100%' }}
+                    centeredSlides={true}
+                    hashNavigation={{ watchState: true }}
+                    noSwiping={true}
+                    noSwipingClass='register__swiper-content'
+                    spaceBetween={40}
+                >
+                    {
+                        steps.map((step, key) => {
+                            return (
+                                <SwiperSlide
+                                    key={key}
+                                    className='register__swiper-content'
+                                    style={{ padding: '1em 1em 1.5em 1em', background: colors.white }}
+                                >
+                                    {step.component}
+                                </SwiperSlide>
+                            )
+                        })
+                    }
+                </Swiper>
             </Box>
         </ThemedCard >
     )

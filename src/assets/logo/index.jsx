@@ -11,6 +11,7 @@ const Logo = () => {
             alignItems={'center'}
             gap={'1.125em'}
             height={'1.3em'}
+            minWidth={'15em'}
         >
             <div
                 style={{

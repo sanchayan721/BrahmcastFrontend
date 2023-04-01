@@ -14,8 +14,9 @@ import { useLoginMutation } from '../../features/auth/authApiSlice'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from '../../features/auth/authSlice'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { colors } from '../theme/style'
+import { colors, speed } from '../theme/style'
 import { PASSWORD_PATTERN, USERNAME_OR_EMAIL_PATTERN } from '../../utils/patterns'
+import { useSwiper } from 'swiper/react'
 
 const helperTextObject = {
     username_email: {
@@ -78,6 +79,8 @@ const LoginForm = () => {
         });
         return () => subscription.unsubscribe();
     }, [err, watch]);
+
+    const swiper = useSwiper();
 
     return (
         <ThemedCard
@@ -249,6 +252,7 @@ const LoginForm = () => {
                         fullWidth
                         size='large'
                         endIcon={<AppRegistrationRounded />}
+                        onClick={() => swiper.slideNext(speed.medium, true)}
                     >
                         Register
                     </ThemedButton>
